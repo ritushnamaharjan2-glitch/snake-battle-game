@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        #gameCanvas {
+            display: block;
+            background-color: #282c34;
+        }
+
+        #playerScoreDisplay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 18px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #leaderboard {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            width: 220px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+
+        #leaderboard h3 {
+            font-size: 22px;
+            color: #ffd700;
+            text-align: center;
+            margin: 0 0 15px 0;
+            border-bottom: 1px solid #ffd700;
+            padding-bottom: 5px;
+        }
+
+        .score-entry {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 16px;
+            color: #f1f1f1;
+        }
+
+        .rank-name {
+            display: flex;
+            align-items: center;
+        }
+
+        .rank {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 8px;
+        }
+
+        .player-highlight {
+            background-color: #00bfff;
+            padding: 6px;
+            border-radius: 5px;
+        }
+
+        #gameOverMessage {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 30px 50px;
+            border-radius: 15px;
+            font-size: 24px;
+            text-align: center;
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            z-index: 1001;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        #gameOverMessage.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        #gameOverMessage h1 {
+            margin: 0;
+            font-size: 36px;
+            color: #ff6347;
+        }
+
+        #gameOverMessage button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff6347;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        #gameOverMessage button:hover {
+            background-color: #ff4500;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="leaderboard">
+        <h3>Top 5 Scores</h3>
+        <div id="aiScores"></div>
+    </div>
+
+    <div id="playerScoreDisplay">
+        Player Score: <span id="playerScore">0</span>
+    </div>
+    <div id="highScoreDisplay" style="
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    color: white;
+    font-size: 18px;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);">
+        High Score: 0
+    </div>
+    <canvas id="gameCanvas"></canvas>
+    <script src="game.js"></script>
+</body>
+
+</html>

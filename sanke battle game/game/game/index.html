@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game - Login & Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #6c5ce7, #3498db, #8e44ad, #2980b9);
+            background-size: 300% 300%;
+            animation: gradient 8s ease infinite;
+        }
+
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav_links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav_links li {
+            margin-left: 1.5rem;
+        }
+
+        .nav_links a {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .nav_links a:hover {
+            background: #3498db;
+        }
+
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            max-width: 420px;
+            width: 90%;
+            margin-top: 120px;
+            text-align: center;
+        }
+
+        .container h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .form_header {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .form_header button {
+            flex: 1;
+            padding: 0.6rem;
+            margin: 0 5px;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            background: #f0f0f0;
+            color: #333;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .form_header button.active {
+            background: #3498db;
+            color: #fff;
+        }
+
+
+        .input_box {
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        .input_box input {
+            width: 100%;
+            padding: 12px;
+            padding-left: 40px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            color: #333;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .input_box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            font-size: 1.2rem;
+        }
+
+
+        .btn {
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 12px;
+            color: #fff;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+
+        #notification {
+            display: none;
+            position: fixed;
+            top: 80px;
+            background-color: #ffe0e0;
+            color: #c0392b;
+            padding: 12px 20px;
+            border: 1px solid #e74c3c;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+
+        #notification.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">Snake Game</a>
+        <ul class="nav_links">
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="#" onclick="toggleForm('login')">Login</a></li>
+            <li><a href="#" onclick="toggleForm('register')">Register</a></li>
+        </ul>
+    </nav>
+
+
+    <section class="container">
+        <div class="form_header">
+            <button id="login_tab" class="active" onclick="toggleForm('login')">Login</button>
+            <button id="register_tab" onclick="toggleForm('register')">Register</button>
+        </div>
+
+
+        <div id="login_form">
+            <h1>Login</h1>
+            <div class="input_box">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="login_email" placeholder="Email" required>
+            </div>
+            <div class="input_box">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="login_password" placeholder="Password" required>
+            </div>
+            <button class="btn" onclick="loginUser()">Login</button>
+        </div>
+
+
+        <div id="register_form" style="display: none;">
+            <h1>Register</h1>
+            <div class="input_box">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" id="register_username" placeholder="Username" required>
+            </div>
+            <div class="input_box">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="register_email" placeholder="Email" required>
+            </div>
+            <div class="input_box">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="register_password" placeholder="Password" required>
+            </div>
+            <div class="input_box">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="confirm_password" placeholder="Confirm Password" required>
+            </div>
+            <button class="btn" onclick="registerUser()">Register</button>
+        </div>
+
+    </section>
+
+    <div id="notification">Notification Message</div>
+
+    <script>
+        function toggleForm(formType) {
+            const loginForm = document.getElementById('login_form');
+            const registerForm = document.getElementById('register_form');
+            const loginTab = document.getElementById('login_tab');
+            const registerTab = document.getElementById('register_tab');
+
+            if (formType === 'login') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                loginTab.classList.remove('active');
+                registerTab.classList.add('active');
+            }
+        }
+
+        function loginUser() {
+            const loginValue = document.getElementById('login_email').value;
+            const password = document.getElementById('login_password').value;
+
+
+            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || {};
+            let currentUser = null;
+
+
+            for (const email in registeredUsers) {
+                const user = registeredUsers[email];
+                if ((user.username === loginValue || email === loginValue) && user.password === password) {
+                    currentUser = email;
+                    break;
+                }
+            }
+
+
+            if (currentUser) {
+
+                localStorage.setItem('currentUser', currentUser);
+                showNotification("Login successful! Redirecting to Snake Game...");
+
+
+                setTimeout(() => {
+                    window.location.href = "snakegame.html";
+                }, 2000);
+            } else {
+                showNotification("Invalid username/email or password. Please try again.");
+            }
+        }
+
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const formType = urlParams.get('form');
+            if (formType === 'register') {
+                toggleForm('register');
+            } else {
+                toggleForm('login');
+            }
+        };
+        function registerUser() {
+            const username = document.getElementById('register_username').value;
+            const email = document.getElementById('register_email').value;
+            const password = document.getElementById('register_password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+
+            if (!email.endsWith('@gmail.com')) {
+                showNotification("Please use a @gmail.com email to register.");
+                return;
+            }
+            if (password !== confirmPassword) {
+                showNotification("Passwords do not match.");
+                return;
+            }
+
+
+            let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || {};
+
+
+            if (registeredUsers[email]) {
+                showNotification("This email is already registered.");
+                return;
+            }
+
+
+            registeredUsers[email] = { username, password, score: 0 };
+            localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+
+
+            localStorage.setItem('currentUser', email);
+
+            showNotification("Registration successful! You can now log in.");
+
+
+            document.getElementById('register_username').value = '';
+            document.getElementById('register_email').value = '';
+            document.getElementById('register_password').value = '';
+            document.getElementById('confirm_password').value = '';
+
+
+            setTimeout(() => {
+                toggleForm('login');
+            }, 2000);
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>

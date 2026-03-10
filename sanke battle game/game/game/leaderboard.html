@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game - Leaderboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #6c5ce7, #3498db, #8e44ad, #2980b9);
+            background-size: 300% 300%;
+            animation: gradient 8s ease infinite;
+        }
+
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav_links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav_links li {
+            margin-left: 1.5rem;
+        }
+
+        .nav_links a {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .nav_links a:hover {
+            background: #3498db;
+        }
+
+
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 90%;
+            margin-top: 100px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .leaderboard-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 20px;
+            margin: 8px 0;
+            font-size: 1.1rem;
+            color: #333;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">Snake Game</a>
+        <ul class="nav_links">
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="index.html">Login</a></li>
+            <li><a href="index.html?form=register">Register</a></li>
+        </ul>
+    </nav>
+
+
+    <section class="container">
+        <h1>Leaderboard</h1>
+        <ul id="leaderboardList" class="leaderboard-list">
+
+        </ul>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            displayLeaderboard();
+        });
+
+        function displayLeaderboard() {
+            let userHighScores = JSON.parse(localStorage.getItem('userHighScores')) || {};
+
+
+            const highScoresArray = Object.entries(userHighScores).map(([email, score]) => {
+                const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || {};
+                const username = registeredUsers[email]?.username || email;
+                return { name: username, score };
+            });
+
+
+            highScoresArray.sort((a, b) => b.score - a.score);
+            const leaderboardList = document.getElementById('leaderboardList');
+            leaderboardList.innerHTML = '';
+
+            highScoresArray.slice(0, 5).forEach((player, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<strong>${index + 1}. ${player.name}</strong> <span>${player.score} pts</span>`;
+                leaderboardList.appendChild(listItem);
+            });
+        }
+    </script>
+
+</body>
+
+</html>

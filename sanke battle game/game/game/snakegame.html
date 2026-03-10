@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Battle - Game Menu</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            overflow: hidden;
+        }
+
+        .menu-container {
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .menu-buttons button {
+            padding: 15px 40px;
+            font-size: 1.4rem;
+            color: white;
+            background: linear-gradient(135deg, #73a5ff, #5477f5);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.4s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .menu-buttons button:hover {
+            background: linear-gradient(135deg, #5477f5, #405ed9);
+            transform: scale(1.05);
+        }
+
+        .menu-buttons button:active {
+            transform: scale(1);
+        }
+
+
+        .background-animated {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.01));
+            animation: animateBackground 10s infinite;
+            z-index: -1;
+        }
+
+        @keyframes animateBackground {
+            0% {
+                background-position: 0 0;
+            }
+
+            50% {
+                background-position: 100% 100%;
+            }
+
+            100% {
+                background-position: 0 0;
+            }
+        }
+
+
+        .instructions-overlay {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .instructions-overlay button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background-color: #5477f5;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .instructions-overlay button:hover {
+            background-color: #405ed9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background-animated"></div>
+
+
+    <div class="menu-container">
+        <h1>Snake Battle</h1>
+        <h2>Player vs AI - Let the Battle Begin!</h2>
+        <h2 id="menuHighScore" style="margin-top: 20px;">High Score: 0</h2>
+
+        <div class="menu-buttons">
+            <button onclick="startGame()">Start Game</button>
+            <button onclick="showInstructions()">Instructions</button>
+            <button onclick="Leaderboard()">Leaderboard</button>
+            <button onclick="quitGame()">Quit</button>
+        </div>
+    </div>
+
+
+    <div id="instructions" class="instructions-overlay">
+        <h2>How to Play</h2>
+        <p>Use the mouse to control your snake.</p>
+        <p>Eat the food to grow larger. Avoid crashing into AI snakes or the walls!</p>
+        <button onclick="closeInstructions()">Close</button>
+    </div>
+
+    <script>
+        function startGame() {
+            window.location.href = 'game.html';
+        }
+
+        function showInstructions() {
+            document.getElementById('instructions').style.display = 'block';
+        }
+
+        function closeInstructions() {
+            document.getElementById('instructions').style.display = 'none';
+        }
+        function Leaderboard() {
+            window.location.href = 'leaderboard.html'
+        }
+
+        function quitGame() {
+            window.location.href = 'index.html';
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = localStorage.getItem('currentUser');
+            let userHighScores = JSON.parse(localStorage.getItem('userHighScores')) || {};
+
+
+            if (currentUser && userHighScores[currentUser] === undefined) {
+                userHighScores[currentUser] = 0;
+                localStorage.setItem('userHighScores', JSON.stringify(userHighScores));
+            }
+
+
+            const highScore = userHighScores[currentUser] || 0;
+            document.getElementById('menuHighScore').textContent = `High Score: ${highScore}`;
+        });
+
+
+
+    </script>
+</body>
+
+</html>
